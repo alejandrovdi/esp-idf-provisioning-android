@@ -305,7 +305,7 @@ public class BLETransport implements Transport {
                                          final BluetoothGattCharacteristic characteristic,
                                          int status) {
 
-            Log.d(TAG, "onCharacteristicRead 2, status " + status + " UUID : " + characteristic.getUuid().toString());
+            Log.d(TAG, "onCharacteristicRead 3, status " + status + " UUID : " + characteristic.getUuid().toString());
             super.onCharacteristicRead(gatt, characteristic, status);
 
             if (uuidMap.get((ESPConstants.HANDLER_PROTO_VER)).equals(characteristic.getUuid().toString())) {
