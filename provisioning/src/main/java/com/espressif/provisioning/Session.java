@@ -76,42 +76,54 @@ public class Session {
      * @throws RuntimeException
      */
     public void init(byte[] response, final SessionListener sessionListener) throws RuntimeException {
+                Log.d(TAG, "On session init");
 
         try {
 
             byte[] request = security.getNextRequestInSession(response);
 
             if (request == null) {
+                Log.d(TAG, "No request");
 
                 isSessionEstablished = true;
                 if (sessionListener != null) {
+                Log.d(TAG, "Got session listener");
                     sessionListener.OnSessionEstablished();
                 }
             } else {
+                Log.d(TAG, "Sending config data for session");
 
                 transport.sendConfigData(ESPConstants.HANDLER_PROV_SESSION, request, new ResponseListener() {
 
                     @Override
                     public void onSuccess(byte[] returnData) {
+                Log.d(TAG, "On transport success");
                         if (returnData == null) {
+                Log.d(TAG, "No return data");
                             if (sessionListener != null) {
+                Log.d(TAG, "Got session listener");
                                 sessionListener.OnSessionEstablishFailed(new RuntimeException("Session could not be established"));
                             }
                         } else {
+                Log.d(TAG, "Got return data. Calling init again");
                             init(returnData, sessionListener);
                         }
                     }
 
                     @Override
                     public void onFailure(Exception e) {
+                Log.d(TAG, "On transport failure");
                         if (sessionListener != null) {
+                Log.d(TAG, "Got session listener");
                             sessionListener.OnSessionEstablishFailed(e);
                         }
                     }
                 });
             }
         } catch (RuntimeException e) {
+                Log.d(TAG, "Got exception on session init");
             if (response == null && sessionListener != null) {
+                Log.d(TAG, "Propagating exception");
                 sessionListener.OnSessionEstablishFailed(new RuntimeException("Session could not be established"));
             }
         }
