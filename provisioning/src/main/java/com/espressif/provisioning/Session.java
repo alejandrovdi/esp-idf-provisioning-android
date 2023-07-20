@@ -124,6 +124,7 @@ public class Session {
             }
         } catch (RuntimeException e) {
                 Log.d(TAG, "Got exception on session init");
+                e.printStackTrace();
             if (response == null && sessionListener != null) {
                 Log.d(TAG, "Propagating exception");
                 sessionListener.OnSessionEstablishFailed(new RuntimeException("Session could not be established"));
