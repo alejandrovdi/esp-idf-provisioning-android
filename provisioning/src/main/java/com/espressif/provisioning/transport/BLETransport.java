@@ -305,10 +305,11 @@ public class BLETransport implements Transport {
                                          final BluetoothGattCharacteristic characteristic,
                                          int status) {
 
-            Log.d(TAG, "onCharacteristicRead, status " + status + " UUID : " + characteristic.getUuid().toString());
+            Log.d(TAG, "onCharacteristicRead 2, status " + status + " UUID : " + characteristic.getUuid().toString());
             super.onCharacteristicRead(gatt, characteristic, status);
 
             if (uuidMap.get((ESPConstants.HANDLER_PROTO_VER)).equals(characteristic.getUuid().toString())) {
+                Log.d(TAG, "Got version information");
 
                 String data = new String(characteristic.getValue(), StandardCharsets.UTF_8);
                 Log.d(TAG, "Value : " + data);
@@ -338,8 +339,10 @@ public class BLETransport implements Transport {
             }
 
             if (currentResponseListener != null) {
+                Log.d(TAG, "Got response listener");
 
                 if (status == BluetoothGatt.GATT_SUCCESS) {
+                  Log.d(TAG, "Gatt success");
                     /*
                      * Need to dispatch this on another thread since the caller
                      * might decide to enqueue another send operation on success
@@ -349,6 +352,7 @@ public class BLETransport implements Transport {
                     dispatcherThreadPool.submit(new Runnable() {
                         @Override
                         public void run() {
+                            Log.d(TAG, "On dispatcher");
                             currentResponseListener = null;
                             byte[] charValue = characteristic.getValue();
                             responseListener.onSuccess(charValue);
@@ -359,6 +363,8 @@ public class BLETransport implements Transport {
                     currentResponseListener.onFailure(new Exception("Read from BLE failed"));
 //                    EventBus.getDefault().post(new DeviceProvEvent(LibConstants.EVENT_DEVICE_COMMUNICATION_FAILED));
                 }
+            } else {
+                Log.d(TAG, "No response listener");
             }
             transportToken.release();
         }
