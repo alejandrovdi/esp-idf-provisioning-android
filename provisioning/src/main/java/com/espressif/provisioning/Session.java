@@ -18,6 +18,8 @@ import com.espressif.provisioning.listeners.ResponseListener;
 import com.espressif.provisioning.security.Security;
 import com.espressif.provisioning.transport.Transport;
 
+import android.util.Log;
+
 /**
  * Session object encapsulates the Transport and Security
  * protocol implementations and is responsible for performing
