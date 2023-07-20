@@ -123,7 +123,8 @@ public class Session {
                 });
             }
         } catch (RuntimeException e) {
-                Log.d(TAG, "Got exception on session init");
+                Log.d(TAG, "2 Got exception on session init");
+                Log.d(TAG, e.toString());
                 e.printStackTrace();
             if (response == null && sessionListener != null) {
                 Log.d(TAG, "Propagating exception");
