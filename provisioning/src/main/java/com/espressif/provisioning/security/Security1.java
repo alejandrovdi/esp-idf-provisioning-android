@@ -140,7 +140,13 @@ public class Security1 implements Security {
                 throw new RuntimeException("No response from device");
             }
             Log.d(TAG, "Before parsing");
-            Session.SessionData responseData = Session.SessionData.parseFrom(hexData);
+            try {
+              Session.SessionData responseData = Session.SessionData.parseFrom(hexData);
+            } catch(Exception e) {
+              Log.d(TAG, s.toString());
+              e.printStackTrack();
+              Log.d(TAG, "Trying to ignore exception");
+            }
             Log.d(TAG, "After parsing");
             if (responseData.getSecVer() != Session.SecSchemeVersion.SecScheme1) {
                 throw new RuntimeException("Security version mismatch");
