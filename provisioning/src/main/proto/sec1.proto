@@ -18,7 +18,6 @@ message SessionCmd0 {
 
 message SessionResp0 {
     Status status = 1;
-    bytes device_pubkey = 2;
     bytes device_random = 3;
 }
 
